@@ -5,13 +5,29 @@ using namespace std;
 const int MAXN = 256;
 
 int main() {
-    char str[MAXN];
-    printf("> Enter string: ");
-    fgets(str, MAXN, stdin);
+    printf("%s", "> Enter input filename: ");
+    char inputFilename[MAXN];
+    fgets(inputFilename, MAXN, stdin);
+    char *isBackslash = strrchr(inputFilename, '\n');
+    if (isBackslash)
+        *isBackslash = '\0';
+
+    printf("%s", "> Enter output filename: ");
+    char outputFilename[MAXN];
+    fgets(outputFilename, MAXN, stdin);
+    isBackslash = strrchr(inputFilename, '\n');
+    if (isBackslash)
+        *isBackslash = '\0';
+
+    FILE *fileInput = fopen(inputFilename, "r");
+    FILE *fileOutput = fopen(outputFilename, "a");
+
+    char inputString[MAXN];
+    fgets(inputString, MAXN, fileInput);
 
     char words[MAXN];
     memset(words, '\0', MAXN);
-    char *word = strtok(str, " .");
+    char *word = strtok(inputString, " .");
     bool first = true;
     while (word != NULL) {
         if (!first)
@@ -21,18 +37,21 @@ int main() {
         word = strtok(NULL, " .\n");
     }
 
-    puts(words);
+    fprintf(fileOutput, "%s\n", words);
 
     char *lastWord = strrchr(words, ' ');
     lastWord = strtok(lastWord, " \n");
-    printf("Last word: %s\n", lastWord);
+
+    fprintf(fileOutput, "Last word: %s\n", lastWord);
 
     char *currentWord = strtok(words, " ");
     while (currentWord != NULL) {
         if (strcmp(lastWord, currentWord) != 0 && currentWord[0] == currentWord[strlen(currentWord) - 1])  //
-            printf("%s ", currentWord);
+            fprintf(fileOutput, "%s ", currentWord);
         currentWord = strtok (NULL, " .");
     }
 
+    fclose(fileInput);
+    fclose(fileOutput);
     return 0;
 }
