@@ -4,23 +4,23 @@ using namespace std;
 
 const int MAXN = 256;
 
-int main() {
-    printf("%s", "> Enter input filename: ");
-    char inputFilename[MAXN];
-    fgets(inputFilename, MAXN, stdin);
+int main(int argc, char *argv[]) {
+//    printf("%s", "> Enter input filename: ");
+    char *inputFilename = argv[1];
+//    fgets(inputFilename, MAXN, stdin);
     char *isBackslash = strrchr(inputFilename, '\n');
     if (isBackslash)
         *isBackslash = '\0';
 
-    printf("%s", "> Enter output filename: ");
-    char outputFilename[MAXN];
-    fgets(outputFilename, MAXN, stdin);
+//    printf("%s", "> Enter output filename: ");
+    char *outputFilename = argv[2];
+//    fgets(outputFilename, MAXN, stdin);
     isBackslash = strrchr(inputFilename, '\n');
     if (isBackslash)
         *isBackslash = '\0';
 
     FILE *fileInput = fopen(inputFilename, "r");
-    FILE *fileOutput = fopen(outputFilename, "a");
+    FILE *fileOutput = fopen(outputFilename, "a+");
 
     char inputString[MAXN];
     fgets(inputString, MAXN, fileInput);
